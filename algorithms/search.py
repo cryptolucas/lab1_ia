@@ -95,7 +95,27 @@ def uniformCostSearch(problem: SearchProblem):
     """
 
     # TODO: Add your code here
-    utils.raiseNotDefined()
+    
+    pq = utils.PriorityQueue()
+    initialStatus =problem.getStartState()
+    pq.push((initialStatus,[],0),0)
+    best_cost= {initialStatus:0}
+    
+    while  not pq.isEmpty():      
+        state,actions,cost = pq.pop()
+        if cost> best_cost.get(state, float("inf")):
+            continue
+        if problem.isGoalState(state):
+            return actions
+      
+            #correr el grafo
+        for suc,action,step_cost in problem.getSuccessors(state):
+            newCost = cost + step_cost    
+            if newCost < best_cost.get(suc, float("inf")):
+                best_cost[suc] = newCost
+                pq.push((suc, actions + [action], newCost), newCost)
+
+    return []
 
 
 def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
